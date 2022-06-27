@@ -87,6 +87,17 @@ export default function OneProduct({ item }) {
             {item.price} сомов
           </Typography> */}
           
+          <div className="product__rating" 
+            style={{
+              background:"lightgray", 
+              display:"flex",
+              flexDirection:"column",
+              alignItems:'center'
+            }}>
+            <h3>Общее</h3>
+            <Rating value={item.rating.average} readOnly />
+            <h4>Average: {item.rating.average}</h4>
+          </div>
         </CardContent>
         
     

@@ -12,6 +12,8 @@ const Filter = ({
   type,
   setType,
   setPage,
+  sort,
+  setSort,
   slider,
   setSlider,
   maxSliderValue,
@@ -64,7 +66,12 @@ const Filter = ({
               control={<Radio />}
               label="Отделение компьютерной томографии и рентгенологии"
             />
-            
+            <FormControlLabel
+              value="rating&_order=asc"
+              onChange={(e)=>setSort(e.target.value)}
+              control={<Radio />}
+              label="Сортировка по рейтингу"
+            />
           </RadioGroup>
         </FormControl>
         <br />

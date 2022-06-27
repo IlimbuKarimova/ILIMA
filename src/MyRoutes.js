@@ -17,7 +17,7 @@ const MyRoutes = () => {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Products />} />
-        <Route path="//detail/:prodId" element={<ProdDetail />} />
+        <Route path="/detail/:prodId" element={<ProdDetail />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/feedback/:id" element={<Feedback />} />

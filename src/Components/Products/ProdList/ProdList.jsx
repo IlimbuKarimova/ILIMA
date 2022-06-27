@@ -28,6 +28,9 @@ const ProdList = () => {
     +searchParams.get("price_gte") || minSliderValue
   );
 
+  //SORT
+  const [sort, setSort] = useState(searchParams.get("_sort" || null))
+
   const paramsWithType = () => {
     return {
       _limit: PRODUCTS_LIMIT,
@@ -35,6 +38,7 @@ const ProdList = () => {
       type: type,
       price_gte: slider,
       q: searchParams.get("q") || "",
+      _sort: sort
     };
   };
 
@@ -85,6 +89,8 @@ const ProdList = () => {
         setPage={setPage}
         type={type}
         setType={setType}
+        sort={sort}
+        setSort={setSort}
         slider={slider}
         setSlider={setSlider}
         maxSliderValue={maxSliderValue}
@@ -94,7 +100,7 @@ const ProdList = () => {
       <br />
       <Grid container spacing={2}>
         {products && products.length > 0 ? (
-          products.map((item) => <OneProduct key={item.id} item={item}  />)
+          products.sort((a, b)=>b.rating.average - a.rating.average).map((item) => <OneProduct key={item.id} item={item}  />)
         ) : (
           <MySkeleton />
         )}

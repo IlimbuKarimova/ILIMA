@@ -16,44 +16,44 @@
         "thoroughness": [
           {
             "user": "test1@gmail.com",
-            "value": 1
+            "value": 5
           },
           {
             "user": "test2@gmail.com",
-            "value": 3
+            "value": 5
           }
         ],
         "efficiency": [
           {
             "user": "test1@gmail.com",
-            "value": 1
+            "value": 5
           },
           {
             "user": "test2@gmail.com",
-            "value": 3
+            "value": 5
           }
         ],
         "attitude": [
           {
             "user": "test1@gmail.com",
-            "value": 1
+            "value": 5
           },
           {
             "user": "test2@gmail.com",
-            "value": 3
+            "value": 5
           }
         ],
         "informing": [
           {
             "user": "test1@gmail.com",
-            "value": 1
+            "value": 5
           },
           {
             "user": "test2@gmail.com",
-            "value": 3
+            "value": 5
           }
         ],
-        "average": 2
+        "average": 5
       },
       "recomend": null,
       "id": 2,
@@ -971,6 +971,11 @@
       "user": "admin@gmail.com",
       "prodId": 2,
       "id": 30
+    },
+    {
+      "user": "test2@gmail.com",
+      "prodId": 2,
+      "id": 31
     }
   ]
 }
