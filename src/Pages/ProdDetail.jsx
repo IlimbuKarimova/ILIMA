@@ -25,30 +25,12 @@ const ProdDetail = () => {
   const [informing, setInforming] = useState([0]);
 
 
-  function countAverage(arr){
-    let result = 0;
-    if(arr){
-      arr.forEach(item=>{
-        result+=item
-      })
-      return result/arr.length
-    }
-  }
-
-  const countAverageRating = () => {
-    oneProd.rating.thoroughness.push(thoroughness)
-    oneProd.rating.efficiency.push(efficiency)
-    oneProd.rating.attitude.push(attitude)
-    oneProd.rating.informing.push(informing)
-    let averageRating = countAverage(oneProd.rating.thoroughness) + countAverage(oneProd.rating.efficiency) + countAverage(oneProd.rating.attitude) + countAverage(oneProd.rating.informing);
-    const newObj = {
-      ...oneProd,
-      rating:{
-        ...oneProd.rating,
-        average: averageRating/4,
-      }
-    }
-    saveEditedProd(newObj)
+  function displayAverage(arr){
+    let res = 0
+    arr.forEach(item=>{
+      res += item.value
+    })
+    return res/arr.length
   }
 
   return (
@@ -66,10 +48,10 @@ const ProdDetail = () => {
           <Grid style={{display: "flex"}}>
           <Grid xs={12} md={6}>
            <img width="400" src={oneProd.img} alt="" />
-           <h5>Тщательность обследования: {countAverage(oneProd.rating.thoroughness)}</h5>
-        <h5>Эффективность лечения: {countAverage(oneProd.rating.efficiency)}</h5>
-        <h5>Отношение к пациенту: {countAverage(oneProd.rating.attitude)}</h5>
-        <h5>Информировнаие пациента: {countAverage(oneProd.rating.informing)}</h5>
+           <h5>Тщательность обследования: {displayAverage(oneProd.rating.thoroughness) || 0 }</h5>
+        <h5>Эффективность лечения: {displayAverage(oneProd.rating.efficiency) || 0 }</h5>
+        <h5>Отношение к пациенту: {displayAverage(oneProd.rating.attitude) || 0 }</h5>
+        <h5>Информировнаие пациента: {displayAverage(oneProd.rating.informing) || 0}</h5>
         <h5>Общее: {oneProd.rating.average}</h5>
         <br></br>
          <Link to={`/feedback/${prodId}`} className="mobile-link">

@@ -15,8 +15,7 @@ export default function Feedback(item) {
 const navigate = useNavigate();
 
 // 
-const { currentUser } = useAuth();
-
+  const { currentUser } = useAuth();
 
 const { addLike, delLike, getLike, likes, allLikes } = useLikeContext();
 const isLikedF = () =>
@@ -44,17 +43,48 @@ const [isLiked, setIsLiked] = React.useState(isLikedF());
     let result = 0;
     if(arr){
       arr.forEach(item=>{
-        result+=item
+        result+=item.value
       })
       return result/arr.length
     }
   }
+  
+  const sendRating = async() => {
+    if(!currentUser.user){
+      alert('Необходимо войти в аккаунт')
+      return
+    }
 
-  const countAverageRating = () => {
-   oneProd.rating.thoroughness.push(thoroughness)
-    oneProd.rating.efficiency.push(efficiency)
-    oneProd.rating.attitude.push(attitude)
-    oneProd.rating.informing.push(informing)
+    oneProd.rating.thoroughness = oneProd.rating.thoroughness.filter(item=>item.user !== currentUser.user)
+    oneProd.rating.thoroughness.push(
+      {
+        user: currentUser.user,
+        value: thoroughness
+      }
+    )
+
+    oneProd.rating.efficiency = oneProd.rating.efficiency.filter(item=>item.user !== currentUser.user)
+    oneProd.rating.efficiency.push({
+      user: currentUser.user,
+      value: efficiency
+    })
+
+    oneProd.rating.attitude = oneProd.rating.attitude.filter(item=>item.user !== currentUser.user)
+    oneProd.rating.attitude.push(
+      {
+        user: currentUser.user,
+        value: attitude
+      }
+    )
+
+    oneProd.rating.informing = oneProd.rating.informing.filter(item=> item.user !== currentUser.user)
+    oneProd.rating.informing.push(
+      {
+        user: currentUser.user,
+        value: attitude
+      }
+    )
+
     let averageRating = countAverage(oneProd.rating.thoroughness) +
      countAverage(oneProd.rating.efficiency) + 
      countAverage(oneProd.rating.attitude) + 
@@ -66,7 +96,8 @@ const [isLiked, setIsLiked] = React.useState(isLikedF());
         average: averageRating/4,
       }
     }
-    saveEditedProd(newObj)
+    await saveEditedProd(newObj)
+    getOneProduct(id)
   }
  
   // 
@@ -112,14 +143,21 @@ const [isLiked, setIsLiked] = React.useState(isLikedF());
       noValidate
       autoComplete="off"
     >
-      <Stack spacing={1}>
-     <h3>Тщательность обследования  <br></br><Rating name="half-rating" value={thoroughness} onChange={(e)=>setThoroughness(parseInt(e.target.value))} precision={1} /> </h3> {countAverage(oneProd.rating.thoroughness)}<br></br> <br></br>
-     <h3>Эффективность лечения <br></br><Rating name="half-rating" value={efficiency} onChange={(e)=>setEfficiency(parseInt(e.target.value))} precision={1} /></h3>  {countAverage(oneProd.rating.efficiency)} <br></br> <br></br>
-     <h3>Отношение к пациенту <br></br><Rating name="half-rating"  value={attitude} onChange={(e)=>setAttitude(parseInt(e.target.value))} precision={1} /> </h3> {countAverage(oneProd.rating.attitude)}<br></br><br></br>
-     <h3>Информирование пациента <br></br><Rating name="half-rating" value={informing} onChange={(e)=>setInforming(parseInt(e.target.value))} precision={1} /> </h3>{countAverage(oneProd.rating.informing)} <br></br><br></br>
-     <h3>Общее <br></br><Rating readOnly value={ oneProd && oneProd.rating ? oneProd.rating.average : 0 } /></h3> Average : {oneProd.rating.average}
-    </Stack>
-   <div align = "center" > Количество проголосовавших: <count all rating >{Object.keys(oneProd.rating.efficiency).length}</count></div>
+      {
+        oneProd ? (
+          <>
+          <Stack spacing={1}>
+          <h3>Тщательность обследования  <br></br><Rating name="half-rating" value={thoroughness} onChange={(e)=>setThoroughness(parseInt(e.target.value))} precision={1} /> </h3> {countAverage(oneProd.rating.thoroughness) || 0}<br></br> <br></br>
+          <h3>Эффективность лечения <br></br><Rating name="half-rating" value={efficiency} onChange={(e)=>setEfficiency(parseInt(e.target.value))} precision={1} /></h3>  {countAverage(oneProd.rating.efficiency) || 0 } <br></br> <br></br>
+          <h3>Отношение к пациенту <br></br><Rating name="half-rating"  value={attitude} onChange={(e)=>setAttitude(parseInt(e.target.value))} precision={1} /> </h3> {countAverage(oneProd.rating.attitude) || 0 }<br></br><br></br>
+          <h3>Информирование пациента <br></br><Rating name="half-rating" value={informing} onChange={(e)=>setInforming(parseInt(e.target.value))} precision={1} /> </h3>{countAverage(oneProd.rating.informing) || 0 } <br></br><br></br>
+          <h3>Общее <br></br><Rating readOnly value={ oneProd && oneProd.rating ? oneProd.rating.average : 0 } /></h3> Average : {oneProd.rating.average}
+         </Stack>
+          <div align = "center" > Количество проголосовавших: <count all rating >{Object.keys(oneProd.rating.efficiency).length}</count></div>
+     </>
+
+        ) : (<h3>Идёт загрузка</h3>)
+      }
     <FormControl>
       {/* <FormLabel id="demo-radio-buttons-group-label">Посоветуете ли Вы врача???</FormLabel>
       <IconButton
@@ -150,7 +188,7 @@ const [isLiked, setIsLiked] = React.useState(isLikedF());
     <br></br>
    
     
-      <Button onClick={countAverageRating} variant="contained">Отправить</Button> 
+      <Button onClick={sendRating} variant="contained">Отправить</Button> 
  <br/>
               <Button         onClick={() => navigate(-1)}
  variant="outlined" color="warning">
